@@ -87,11 +87,11 @@
 	
 	<script>
 		
-		var zoombie = new ZoombieWidget("44449999", "customer-id");
+		var zoombie = new ZoombieWidget("44449999", "Z12345678");
 		zoombie.init();
 	
 		function refreshMeetings () {
-			$.getJSON("http://localhost:8080/api/users/44449999/meetings", function (data) {
+			$.getJSON("/api/users/44449999/meetings", function (data) {
 				$("#meetings-table").empty();
 				$.each(data, function(key, m) {
 					//console.log("RESP: "+JSON.stringify(item));
@@ -118,7 +118,7 @@
 			
 			$.ajax({
 				type: "POST",
-				url: "http://localhost:8080/api/users/44449999/meetings",
+				url: "/api/users/44449999/meetings",
 				dataType: "json",
 				headers: {"Content-Type":"application/json"},
 				data: JSON.stringify(newMeeting),
@@ -135,7 +135,7 @@
 			var d = new Date(m.startTime);
 			return $("<tr>"
 					+"<th scope=\"row\">"+formatDate(d)+"</th>"
-					+"<td>"+m.topic+"</td>"
+					+"<th>"+m.topic+"</td>"
 					+"<td>"+m.participateId+"</td>"
 					+"<td><input class=\"form-control\" type=\"text\" value=\""+m.zoomMeetingJoinUrl+"\" readonly></td>"
 					+"<td><a href=\""+m.zoomMeetingStartUrl+"\" target=\"start-meeting-frame\">Start Meeting</a></td>"
@@ -148,7 +148,7 @@
 			var d = new Date(m.startTime);
 			return $("<tr style=\"display: none;\">"
 					+"<th scope=\"row\">"+formatDate(d)+"</th>"
-					+"<td>"+m.topic+"</td>"
+					+"<th>"+m.topic+"</td>"
 					+"<td>"+m.participateId+"</td>"
 					+"<td><input class=\"form-control\" type=\"text\" value=\""+m.zoomMeetingJoinUrl+"\" readonly></td>"
 					+"<td><a href=\""+m.zoomMeetingStartUrl+"\" target=\"start-meeting-frame\">Start Meeting</a></td>"
@@ -158,12 +158,59 @@
 		
 		function formatDate(timestamp){
 	        var x=new Date(timestamp);
+	        var yy = x.getFullYear();
 	        var dd = x.getDate();
 	        var mm = x.getMonth()+1;
-	        var yyyy = x.getFullYear();
+	        var month = "";
+	        switch(mm) {
+		    	case 1:
+					month = "Jan"
+					break;
+				case 2:
+					month = "Feb"
+					break;
+				case 3:
+					month = "Mar"
+					break;
+				case 4:
+					month = "Apr"
+					break;
+				case 5:
+					month = "May"
+					break;
+				case 6:
+					month = "Jun"
+					break;
+				case 7:
+					month = "Jul"
+					break;
+				case 8:
+					month = "Aug"
+					break;
+				case 9:
+					month = "Sep"
+					break;
+				case 10:
+					month = "Oct"
+					break;
+				case 11:
+					month = "Nov"
+					break;
+				case 12:
+					month = "Dec"
+					break;
+		        default:
+		          // code block
+		    }
+	        
 	        var hh = x.getHours();
 	        var mi = x.getMinutes();
-	        return dd +"/" + mm+"/" + yyyy+" "+hh+":"+mi;
+	        var ampm = hh >= 12 ? 'pm' : 'am';
+	        hh = hh % 12;
+	        hh = hh ? hh : 12; // the hour '0' should be '12'
+	        mi = mi < 10 ? '0'+mi : mi;
+	        
+	        return dd + " " + month +" "+ yy +"<br>"+hh+":"+mi + " " + ampm;
 	    }
 		
 		refreshMeetings();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.api.core.ApiFuture;
@@ -37,7 +38,7 @@ public class MeetingController {
 	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
 	
 	@RequestMapping(value = "/api/users/{userId}/meetings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Meeting> listMeetings(@PathVariable String userId)
+	public List<Meeting> listMeetings(@PathVariable String userId, @RequestParam(required = false) String participateId)
 			throws InterruptedException, ExecutionException {
 
 		FirestoreOptions firestoreOptions = FirestoreOptions
@@ -53,13 +54,20 @@ public class MeetingController {
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		
 		for (QueryDocumentSnapshot document : documents) {
-			meetings.add(document.toObject(Meeting.class));
+			Meeting m = document.toObject(Meeting.class);
+			if (participateId != null) {
+				if (m.getParticipateId().equals(participateId)) {
+					meetings.add(m);
+				}
+			} else {
+				meetings.add(m);
+			}
 		}
 		
 		List<Meeting> sortedMeetings = meetings.stream().sorted(Comparator.comparing(Meeting::getStartTime).reversed())
 				.collect(Collectors.toList());
 
-		return meetings;
+		return sortedMeetings;
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/meetings", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

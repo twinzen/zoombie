@@ -1,8 +1,86 @@
-#zoombie-widget {
+#zoombie-widget-icon {
 	position: fixed;
-	bottom: 0;
-	right: 0;
-	width: 100px;
-	height: 100px;
-	border: 3px solid #73AD21;
+	bottom: 20px;
+	right: 20px;
+  	width: 90px;
+  	height: 70px;
+	//border: 3px solid #73AD21;
+}
+
+#zoombie-widget-icon .icon {
+  background-color: #1d94de;
+  color: white;
+  text-decoration: none;
+  padding: 10px 10px;
+  position: absolute;
+  width: 90px;
+  height: 70px;
+  bottom: 0;
+  right: 0;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+#zoombie-widget-icon .icon-no-meeting {
+  background-color: #555;
+}
+
+#zoombie-widget-icon .icon:hover {
+  background: #53b2ed;
+}
+
+#zoombie-widget-icon .icon .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 5px;
+  border-radius: 20%;
+  background: red;
+  color: white;
+}
+
+#zoombie-widget-icon .icon .badge-no-meeting {
+  background: gray;
+}
+
+#zoombie-widget-detail {
+	position: fixed;
+	bottom: 20px;
+	right: 110px;
+  	width: 250px;
+  	height: 70px;
+	display: none;
+}
+
+#zoombie-widget-detail .content {
+	background-color: #fffdeb;
+	bottom: 20px;
+	right: 110px;
+  	width: 250px;
+  	height: 70px;
+	font-size: 12px;
+	padding: 10px 10px;
+}
+
+#zoombie-widget-detail span{
+	font-weight: bold;
+}
+
+#zoombie-widget-one-click-meeting {
+	position: fixed;
+	bottom: 20px;
+	right: 110px;
+  	width: 250px;
+  	height: 70px;
+	display: none;
+}
+
+#zoombie-widget-one-click-meeting .content {
+	background-color: #fffdeb;
+	bottom: 20px;
+	right: 110px;
+  	width: 250px;
+  	height: 70px;
+	font-size: 12px;
+	padding: 10px 10px;
 }
