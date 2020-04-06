@@ -13,6 +13,10 @@ There are two options to integrate with Zoombie
 ```
 <link rel="stylesheet" href="https://zoombie-273203.appspot.com/widget/zoombie.css">
 <script src="https://zoombie-273203.appspot.com/widget/zoombie.js"></script>
+<script>
+  var zoombie = new ZoombieWidget("44449999", "Z12345678"); // user-id, participate-id
+	zoombie.init();
+</script>
 ```
 
 ### Integrate your existing meeting appointment system with Zoombie
@@ -23,6 +27,10 @@ There are two options to integrate with Zoombie
 ```
 <link rel="stylesheet" href="https://zoombie-273203.appspot.com/widget/zoombie.css">
 <script src="https://zoombie-273203.appspot.com/widget/zoombie.js"></script>
+<script>
+  var zoombie = new ZoombieWidget("44449999", "Z12345678"); // user-id, participate-id
+	zoombie.init();
+</script>
 ```
 ## More from Zoombie
 Please visit our product page.
