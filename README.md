@@ -24,4 +24,6 @@ There are two options to integrate with Zoombie
 <link rel="stylesheet" href="https://zoombie-273203.appspot.com/widget/zoombie.css">
 <script src="https://zoombie-273203.appspot.com/widget/zoombie.js"></script>
 ```
+## More from Zoombie
+Please visit our product page.
 
