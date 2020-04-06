@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<link rel="stylesheet"
+	href="./widget/zoombie.css">
+
+<title>Hello, world!</title>
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-dark" style="color: white;">
+	  <h1>ZOOMBIE</h1>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#newMeetingForm" aria-controls="newMeetingForm" aria-expanded="false" aria-label="Toggle navigation">
+	    <svg class="bi bi-plus-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		  <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zM8.5 4a.5.5 0 00-1 0v3.5H4a.5.5 0 000 1h3.5V12a.5.5 0 001 0V8.5H12a.5.5 0 000-1H8.5V4z" clip-rule="evenodd"/>
+		</svg> Add New Meeting
+	  </button>
+	
+	  <div class="collapse navbar-collapse" id="newMeetingForm">
+	    <form action="#">
+	      <div class="form-group">
+		    <label for="topicInput">Topic</label>
+		    <input type="text" class="form-control" id="topicInput" placeholder="Enter meeting topic ">
+		  </div>
+		  <div class="form-group">
+		    <label for="startTimeInput">Start Date Time</label>
+		    <input type="datetime-local" class="form-control" id="startTimeInput" aria-describedby="startTimeHelp" placeholder="Enter meeting start date time">
+		    <small id="startTimeHelp" class="form-text text-muted">This is Hong Kong timezone.</small>
+		  </div>
+		  <div class="form-group">
+		    <label for="durationInput">Duration</label>
+		    <input type="number" class="form-control" id="durationInput" aria-describedby="durationHelp" placeholder="How long is the meeting?">
+		    <small id="durationHelp" class="form-text text-muted">In minutes.</small>
+		  </div>
+		  <div class="form-group">
+		    <label for="participateIdInput">Participate ID</label>
+		    <input type="text" class="form-control" id="participateIdInput" placeholder="Enter participate's ID">
+		  </div>
+		  <button class="btn btn-primary" onClick="javascription:addMeeting();">Add New Meeting</button>
+		</form>
+	  </div>
+	</nav>
+
+	<table class="table">
+		<thead class="thead-light">
+			<tr>
+				<th scope="col" style="width: 15%">Date Time</th>
+				<th scope="col" style="width: 25%">Topic</th>
+				<th scope="col" style="width: 15%">Participate Id</th>
+				<th scope="col" style="width: 30%">Join URL</th>
+				<th scope="col" style="width: 15%"></th>
+			</tr>
+		</thead>
+		<tbody id="meetings-table">
+			
+		</tbody>
+	</table>
+
+	<iframe src="blank.html" style="border: none;width: 0px; height: 0px;" name="start-meeting-frame"></iframe>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script
+		src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+	
+	<script src="./widget/zoombie.js"></script>
+	
+	<script>
+		
+		var zoombie = new ZoombieWidget("44449999", "customer-id");
+		zoombie.init();
+	
+		function refreshMeetings () {
+			$.getJSON("http://localhost:8080/api/users/44449999/meetings", function (data) {
+				$("#meetings-table").empty();
+				$.each(data, function(key, m) {
+					//console.log("RESP: "+JSON.stringify(item));
+					$("#meetings-table").append(formatMeetingTable(m));
+				});
+			});	
+		}
+		
+		function addMeeting () {
+			
+			var newMeeting = {};
+			
+			newMeeting["topic"] = $("#topicInput").val();
+			newMeeting["participateId"] = $("#participateIdInput").val();
+			newMeeting["participateEmail"] = $("#participateEmailInput").val();
+			newMeeting["startTime"] = $("#startTimeInput").val();
+			newMeeting["duration"] = $("#durationInput").val();
+			newMeeting["creationAppCde"] = "RMP";
+			newMeeting["launchAppCde"] = "SFP";
+			
+			console.log(JSON.stringify(newMeeting));
+			
+			$("#newMeetingForm").collapse("hide");
+			
+			$.ajax({
+				type: "POST",
+				url: "http://localhost:8080/api/users/44449999/meetings",
+				dataType: "json",
+				headers: {"Content-Type":"application/json"},
+				data: JSON.stringify(newMeeting),
+				success: function (data) {
+					newMeetingTable = formatNewMeetingTable(data);
+					$("#meetings-table").prepend(newMeetingTable);
+					newMeetingTable.show("slow");
+				}
+			})
+		}
+		
+		function formatMeetingTable (m) {
+			
+			var d = new Date(m.startTime);
+			return $("<tr>"
+					+"<th scope=\"row\">"+formatDate(d)+"</th>"
+					+"<td>"+m.topic+"</td>"
+					+"<td>"+m.participateId+"</td>"
+					+"<td><input class=\"form-control\" type=\"text\" value=\""+m.zoomMeetingJoinUrl+"\" readonly></td>"
+					+"<td><a href=\""+m.zoomMeetingStartUrl+"\" target=\"start-meeting-frame\">Start Meeting</a></td>"
+					+"</tr>"
+					);
+		}
+		
+		function formatNewMeetingTable (m) {
+			
+			var d = new Date(m.startTime);
+			return $("<tr style=\"display: none;\">"
+					+"<th scope=\"row\">"+formatDate(d)+"</th>"
+					+"<td>"+m.topic+"</td>"
+					+"<td>"+m.participateId+"</td>"
+					+"<td><input class=\"form-control\" type=\"text\" value=\""+m.zoomMeetingJoinUrl+"\" readonly></td>"
+					+"<td><a href=\""+m.zoomMeetingStartUrl+"\" target=\"start-meeting-frame\">Start Meeting</a></td>"
+					+"</tr>"
+					);
+		}	
+		
+		function formatDate(timestamp){
+	        var x=new Date(timestamp);
+	        var dd = x.getDate();
+	        var mm = x.getMonth()+1;
+	        var yyyy = x.getFullYear();
+	        var hh = x.getHours();
+	        var mi = x.getMinutes();
+	        return dd +"/" + mm+"/" + yyyy+" "+hh+":"+mi;
+	    }
+		
+		refreshMeetings();
+	</script>
+</body>
+</html>

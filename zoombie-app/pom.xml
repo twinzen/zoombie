@@ -6,28 +6,28 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>twinzom</groupId>
 	<artifactId>com.twinzom.zoombie</artifactId>
 	<version>1.0.0</version>
-	
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencyManagement>
-	  <dependencies>
-	    <dependency>
-	      <groupId>com.google.cloud</groupId>
-	      <artifactId>libraries-bom</artifactId>
-	      <version>4.4.0</version>
-	      <type>pom</type>
-	      <scope>import</scope>
-	    </dependency>
-	  </dependencies>
+		<dependencies>
+			<dependency>
+				<groupId>com.google.cloud</groupId>
+				<artifactId>libraries-bom</artifactId>
+				<version>4.4.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
 	</dependencyManagement>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -46,19 +46,38 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.cloud</groupId>
-		    <artifactId>google-cloud-firestore</artifactId>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-firestore</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-webflux</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.projectreactor</groupId>
-		    <artifactId>reactor-spring</artifactId>
-		    <version>1.0.1.RELEASE</version>
+			<groupId>org.projectreactor</groupId>
+			<artifactId>reactor-spring</artifactId>
+			<version>1.0.1.RELEASE</version>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>cloud-gcp</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>appengine-maven-plugin</artifactId>
+						<version>2.1.0</version>
+						<configuration>
+							<version>1</version>
+							<projectId>zoombie-273203</projectId>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -68,6 +87,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
 
