@@ -15,7 +15,7 @@ There are two options to integrate with Zoombie
 <script src="https://zoombie-273203.appspot.com/widget/zoombie.js"></script>
 <script>
   var zoombie = new ZoombieWidget("44449999", "Z12345678"); // user-id, participate-id
-	zoombie.init();
+  zoombie.init();
 </script>
 ```
 
@@ -29,7 +29,7 @@ There are two options to integrate with Zoombie
 <script src="https://zoombie-273203.appspot.com/widget/zoombie.js"></script>
 <script>
   var zoombie = new ZoombieWidget("44449999", "Z12345678"); // user-id, participate-id
-	zoombie.init();
+  zoombie.init();
 </script>
 ```
 ## More from Zoombie
